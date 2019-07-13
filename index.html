@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <base href="http://192.168.0.5:2222/">
@@ -6,12 +6,10 @@
     <title>Blackfisk</title>
     <style data-savepage-href="./style.css">
       
-      canvas {
-      opaticy: 0.8;
-      }
+
       
       html, body {
-      filter: blur(1.5rem);
+     
         background: #f2f2f2;
         background: -moz-radial-gradient(center, ellipse cover,  #ffffff 0%, #ffffff 26%, #f5f5f5 59%, #f5f5f5 77%, #cecece 100%);
         background: -webkit-gradient(radial, center center, 0, center center, 100%, color-stop(0%,#ffffff), color-stop(26%,#ffffff), color-stop(59%,#f5f5f5), color-stop(77%,#f5f5f5), color-stop(100%,#cecece));
@@ -23,6 +21,27 @@
         padding: 0;
         margin: 0;
         height: 100%;
+      }
+
+     
+#container  {
+  background-size:cover;
+
+    filter: blur(3px);
+    position:absolute;
+    width:100%;
+    height:100%;
+
+}
+
+   #sketch-0 {
+      opacity: 0.9;
+      filter: blur(0px);
+      }
+
+      .dg, .ac, .tallerclass,.dg ,.main ,.a ,.taller-than-window  {
+      opacity: 1;
+        filter: blur(0);
       }
 
       body:before {
@@ -11068,15 +11087,16 @@
         var settings = {
           interactive: false,
           darkTheme: false,
-          headRadius: 32,
-          thickness: 52,
+          headRadius: 4,
+          thickness: 64,
           tentacles: 8,
-          friction: 0.09,
+          friction: 0.05,
           gravity: 0.15,
-          colour: { h:0.5, s:0.4, v:0.85 },
-          length: 18,
+         // colour: { h:0.15, s:0.1, v:0.85 },
+          colour: { h:0.01, s:0.01, v:0.15 },
+          length: 16,
           pulse: true,
-          wind: -0.42
+          wind: -0.82
         };
 
         var utils = {
@@ -11114,11 +11134,11 @@
 
         var Tentacle = function( options ) {
 
-          this.length = options.length || 10;
-          this.radius = options.radius || 10;
+          this.length = options.length || 80;
+          this.radius = options.radius || 80;
           this.spacing = options.spacing || 20;
-          this.friction = options.friction || 0.8;
-          this.shade = random( 0.95, 1.1 );
+          this.friction = options.friction || 0.4;
+          this.shade = random( 0.95, 0.9 );
 
           this.nodes = [];
           this.outer = [];
@@ -11227,24 +11247,30 @@
             ctx.fillStyle = 'hsl(' + h + ',' + s + '%,' + v + '%)';
             ctx.fill();
 
-            if ( settings.thickness > 2 ) {
+      //      if ( settings.thickness > 8 ) {
 
-              v += settings.darkTheme ? -4 : 4;
+              v += settings.darkTheme ? -2 : 2;
 
               ctx.strokeStyle = 'hsl(' + h + ',' + s + '%,' + v + '%)';
               ctx.lineWidth = 4;
               ctx.stroke();
-            }
+     //       }
           }
         };
 
         var demo = true;
-        var ease = 0.92;
+        var ease = 0.992;
         var modified = false;
         var radius = settings.headRadius;
         var tentacles = [];
         var center = { x:0, y:0 };
+ /* 
+        settings = {
 
+        darkTheme: false
+
+        }
+*/
         var sketch = Sketch.create({
 
           container: document.getElementById( 'container' ),
@@ -11259,7 +11285,7 @@
             for ( var i = 0; i < 100; i++ ) {
 
               tentacle = new Tentacle({
-                length: random( 32, 24 ),
+                length: random( 32, 38 ),
                 radius: random( 0.6, 0.7 ),
                 spacing: random( 0.75, 0.89 ),
                 friction: random( 0.9, 0.96 )
@@ -11279,7 +11305,7 @@
             if ( settings.pulse ) {
 
               pulse = pow( sin( t * PI ), 3 );
-              radius = settings.headRadius * 0.1 + settings.headRadius * 0.1 * pulse;
+              radius = settings.headRadius * 0.1 + settings.headRadius * 0.4 * pulse;
             }
 
             if ( settings.interactive ) {
@@ -11298,7 +11324,7 @@
               cy = this.height * 0.7;
 
               center.x = cx + sin( t * 0.002 ) * cos( t * 0.00004005 ) * cx/2 * 0.90125;
-              center.y = cy + sin( t * 0.0023 ) * tan( sin( t * 0.0009 ) * 0.85 ) * cy * 0.24;
+              center.y = cy + sin( t * 0.0023 ) * tan( sin( t * 0.0009 ) * 0.25 ) * cy * 0.24;
             }
 
             var px, py, theta, tentacle;
@@ -11320,19 +11346,18 @@
 
           draw: function() {
 
-            var h = settings.colour.h * 0.95;
-            var s = settings.colour.s * 100 * 0.95;
-            var v = settings.colour.v * 100 * 0.95;
-            var w = v + ( settings.darkTheme ? -10 : 10 );
-
+            var h = settings.colour.h * 0.05;
+            var s = settings.colour.s * 100 * 0.55;
+            var v = settings.colour.v * 100 * 0.95 -5;
+            var w = v + ( settings.darkTheme ? 0 : 0 );
+ this.globalAlpha = 0.6;
             this.beginPath();
-            this.arc( center.x, center.y, radius + settings.thickness, 0, TWO_PI );
-            this.lineWidth = settings.headRadius * 0.3;
-            this.globalAlpha = 0.2;
-            this.strokeStyle = 'hsl(' + h + ',' + s + '%,' + w + '%)';
-            this.stroke();
+             
+             this.arc( center.x, center.y, radius + settings.thickness, 0, TWO_PI );
+            this.fillStyle = 'hsl(' + h + ',' + s + '%,' + v + '%)';
+            this.fill();
 
-            this.globalAlpha = 1.0;
+        
 
             for ( var i = 0, n = settings.tentacles; i < n; i++ ) {
               tentacles[i].draw( this );
@@ -11353,9 +11378,10 @@
               interactiveGUI.updateDisplay();
 
               if ( !modified ) {
-                settings.length = 60;
-                settings.gravity = 0.001;
-                settings.wind = 0.09;
+                settings.length = 24;
+                settings.friction = 0.182;
+                settings.gravity = 0.011;
+                settings.wind = 0.19;
               }
             }
           },
@@ -11370,10 +11396,10 @@
         }
 
         function onThemeChanged( dark ) {
-
-          settings.colour.h = 0;
-          settings.colour.s = 0;
-          settings.colour.v = dark ? 0.8 : 0.1;
+//{h:21,s:0.3,v:0.8}
+          settings.colour.h = 0.1;
+          settings.colour.s = 0.3;
+          settings.colour.v = dark ? 0.75 : 1;
 
           document.body.className = dark ? 'dark' : '';
 
@@ -11382,23 +11408,23 @@
       
         var gui = new dat.GUI();
         gui.add( settings, 'headRadius' ).min( 0.0 ).max( 100.0 ).onChange( onSettingsChanged );
-        gui.add( settings, 'tentacles' ).min( 1 ).max( 100 ).onChange( onSettingsChanged );
+        gui.add( settings, 'tentacles' ).min( 1 ).max( 64 ).onChange( onSettingsChanged );
         gui.add( settings, 'thickness' ).min( 24.0 ).max( 12.0 ).onChange( onSettingsChanged );
-        gui.add( settings, 'length' ).min( 96.0 ).max( 98.0 ).onChange( onSettingsChanged );
+        gui.add( settings, 'length' ).min( 12.0 ).max( 98.0 ).onChange( onSettingsChanged );
         gui.add( settings, 'gravity' ).min( -3.0 ).max( 3.0 ).onChange( onSettingsChanged );
         gui.add( settings, 'wind' ).min( -3.0 ).max( 3.0 ).onChange( onSettingsChanged );
-        gui.add( settings, 'friction' ).min( 0.0 ).max( 1.0 ).onChange( onSettingsChanged );
+        gui.add( settings, 'friction' ).min( 0.4 ).max( 1.0 ).onChange( onSettingsChanged );
 
         var colourGUI = gui.addColor( settings, 'colour' );
         gui.add( settings, 'darkTheme' ).onChange( onThemeChanged );
-        gui.add( settings, 'pulse' );
+       // gui.add( settings, 'pulse' );
 
         var interactiveGUI = gui.add( settings, 'interactive' );
         gui.add( sketch, 'autoclear' );
         gui.add( sketch, 'save' );
         gui.close();
 
-        onThemeChanged( true );'
+        onThemeChanged( true );
         
 
       });
